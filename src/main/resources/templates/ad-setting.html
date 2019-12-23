@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- meta -->
+    <meta charset="utf-8">
+    <!-- 编码 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 以上代码告诉IE浏览器，IE8/9及以后的版本都会以最高版本IE来渲染页面 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- 移动端页面适应:width - viewport的宽度
+                    height - viewport的高度
+                    initial-scale - 初始的缩放比例
+                    minimum-scale - 允许用户缩放到的最小比例
+                    maximum-scale - 允许用户缩放到的最大比例
+                    user-scalable - 用户是否可以手动缩放  -->
+    <!-- 上述3个meta标签必须放在最前面，任何其他内容都必须跟随其后！ Bootstrap3格式 -->
+
+    <title>超级码力- 博客后台管理系统</title>
+
+    <!-- css -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+
+    <!-- js -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        function check(){
+            var noticeMsg = document.getElementById("noticeMsg");
+            var isPass = true;
+
+            var notice = document.getElementById("notice");
+            var length = notice.value.length;
+            if(length<1 || length>50){
+//					alert("用户名长度必须是3-6位");
+                noticeMsg.innerText= "公告长度必须是1-50位";
+                isPass = false;
+            }else{
+                noticeMsg.innerText= "";
+            }
+            return isPass;
+        }
+        function check1(){
+            var nameMsg = document.getElementById("nameMsg");
+            var urlMsg = document.getElementById("urlMsg");
+            var isPass = true;
+
+            var name = document.getElementById("name");
+            var url = document.getElementById("url");
+            var length = name.value.length;
+            if(length<1 || length>20){
+//					alert("用户名长度必须是3-6位");
+                nameMsg.innerText= "名称长度必须是1-20位";
+                isPass = false;
+            }else{
+                nameMsg.innerText= "";
+            }
+            var length1 = url.value.length;
+            if(length1<1 || length1>30){
+//					alert("用户名长度必须是3-6位");
+                urlMsg.innerText= "链接长度必须是1-30位";
+                isPass = false;
+            }else{
+                urlMsg.innerText= "";
+            }
+            return isPass;
+        }
+
+        function checkPassword1(){
+            var passMsg = document.getElementById("passMsg");
+
+            var oldpassword = document.getElementById("oldpassword");
+            if (oldpassword.value.length >= 6 && oldpassword.value.length<=10){
+                passMsg.innerText="";
+            }else {
+                passMsg.innerText="密码输入格式不正确";
+            }
+        }
+
+        function checkPassword(){
+            var passwordMsg = document.getElementById("passwordMsg");
+
+            var password = document.getElementById("password");
+            var rePassword = document.getElementById("repassword").value;
+            if(password.value.length<6 || password.value.length>10){
+                passwordMsg.innerText="密码必须在6-10位之间"
+            }else{
+                passwordMsg.innerText="";
+                if(password.value!=rePassword){
+                    passwordMsg.innerText="两次输入密码不一致";
+                }else{
+                    passwordMsg.innerText="";
+                }
+            }
+        }
+
+        function check2(){
+            var passwordMsg = document.getElementById("passwordMsg");
+
+            var password = document.getElementById("password");
+            var rePassword = document.getElementById("repassword").value;
+            var isPass = true;
+            var passMsg = document.getElementById("passMsg");
+
+            var oldpassword = document.getElementById("oldpassword");
+            if (oldpassword.value.length >= 6 && oldpassword.value.length<=10){
+                passMsg.innerText="";
+            }else {
+                passMsg.innerText="密码输入格式不正确";
+                isPass=false;
+            }
+            if(password.value.length<6 || password.value.length>10){
+                passwordMsg.innerText="密码必须在6-10位之间"
+                isPass = false;
+            }else{
+                passwordMsg.innerText="";
+                if(password.value!=rePassword){
+                    passwordMsg.innerText="两次输入密码不一致";
+                    isPass=false;
+                }else{
+                    passwordMsg.innerText="";
+                }
+            }
+            return isPass;
+        }
+    </script>
+</head>
+
+<body>
+<section class="container-fluid">
+    <header>
+        <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">超级码力- 博客后台管理系统</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span th:text="${identity}"></span> <span class="caret"></span></a>
+                            <ul class="dropdown-menu dropdown-menu-left">
+                                <li><a href="/logout" onClick="if(!confirm('是否确认退出？'))return false;">退出登录</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="row">
+        <aside class="col-sm-3 col-md-2 col-lg-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a href="/index">概况</a></li>
+                <li><a href="/articles">文章</a></li>
+                <li><a href="/category">文章分类</a></li>
+                <li><a href="/user">用户</a></li>
+                <li><a href="/line">时光轴</a></li>
+                <li><a href="/information">个人信息</a></li>
+                <li class="active"><a href="/setting">设置</a></li>
+            </ul>
+        </aside>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+            <h3>系统设置</h3>
+            <div style="padding: 10px; height: 300px;width: 100%;background-color: white; margin-bottom: 20px; overflow:auto;">
+                <h4>网站公告</h4>
+                <div>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th class="hidden-sm"><span class="glyphicon glyphicon-comment"></span>公告</th>
+                            <th><span class="glyphicon glyphicon-list"></span>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>dfasdfasdfdfg</td>
+                            <td><a href="">删除</a></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <h5>添加</h5>
+                    <form action="/gyugu" method="post" onsubmit="return check()">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="notice" id="notice" placeholder="添加公告">
+                        </div>
+                        <input type="submit" class="btn btn-default" value="提 交">
+                        <p><font color="red" id="noticeMsg"></font></p>
+                    </form>
+                </div>
+            </div>
+            <div style="padding: 10px; height: 300px;width: 100%;background-color: white; margin-bottom: 20px; overflow:auto;">
+                <h4>友情链接</h4>
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th class="hidden-sm"><span class="glyphicon glyphicon-comment"></span>名称</th>
+                        <th><span class="glyphicon glyphicon-list"></span>链接</th>
+                        <th><span class="glyphicon glyphicon-list"></span>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>啊啊啊</td>
+                        <td>http://baidu.com</td>
+                        <td><a href="">删除</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <h5>添加</h5>
+                <form action="/gyugu" method="post" onsubmit="return check1()">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="name" id="name" placeholder="名称">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="url" name="url" placeholder="链接">
+                    </div>
+                    <input type="submit" class="btn btn-default" value="提 交">
+                    <p><font color="red" id="nameMsg"></font></p>
+                    <p><font color="red" id="urlMsg"></font></p>
+                </form>
+            </div>
+            <div style="padding: 10px; height: 300px;width: 100%;background-color: white; margin-bottom: 20px; overflow:auto;">
+                <h4>修改密码</h4>
+                <form action="/gyugu" method="post" onsubmit="return check2()">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="oldpassword" name="aldpassword" onblur="checkPassword1()" placeholder="初始密码">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="password" name="password" onblur="checkPassword()" placeholder="新的密码">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="repassword" onblur="checkPassword()" placeholder="再次输入你的新密码">
+                    </div>
+                    <input type="submit" class="btn btn-default" value="提 交">
+                    <p><font color="red" id="passMsg"></font></p>
+                    <p><font color="red" id="passwordMsg"></font></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery  -->
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; Charset=gb2312">
+    <meta http-equiv="Content-Language" content="zh-CN">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <title th:text="${own}+'- 博客网站'">博客网站</title>
+    <link rel="shortcut icon" href="../images/Logo_40.png" type="image/x-icon">
+    <!--Layui-->
+    <link href="../plug/layui/css/layui.css" rel="stylesheet" />
+    <!--font-awesome-->
+    <link href="../plug/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <!--全局样式表-->
+    <link href="../css/global.css" rel="stylesheet" />
+    <!-- 本页样式表 -->
+    <link href="../css/home.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- 导航 -->
+    <nav class="blog-nav layui-header">
+        <div class="blog-container">
+            <!-- QQ互联登陆 -->
+            <a href="/logout" class="blog-user">
+                <i class="fa fa-user"></i><span>&nbsp;退出登录</span>
+            </a>
+            <a class="blog-logo" href="/home" th:text="${own}"></a>
+            <!-- 导航菜单 -->
+            <ul class="layui-nav" lay-filter="nav">
+                <li class="layui-nav-item layui-this">
+                    <a href="/home"><i class="fa fa-home fa-fw"></i>&nbsp;网站首页</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/article"><i class="fa fa-file-text fa-fw"></i>&nbsp;文章专栏</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/resource"><i class="fa fa-tags fa-fw"></i>&nbsp;资源分享</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/timeline"><i class="fa fa-hourglass-half fa-fw"></i>&nbsp;点点滴滴</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/about"><i class="fa fa-info fa-fw"></i>&nbsp;关于本站</a>
+                </li>
+            </ul>
+            <!-- 手机和平板的导航开关 -->
+            <a class="blog-navicon" href="javascript:;">
+                <i class="fa fa-navicon"></i>
+            </a>
+        </div>
+    </nav>
+    <!-- 主体（一般只改变这里的内容） -->
+    <div class="blog-body">
+        <!-- canvas -->
+        <canvas id="canvas-banner" style="background: #393D49;"></canvas>
+        <!--为了及时效果需要立即设置canvas宽高，否则就在home.js中设置-->
+        <script type="text/javascript">
+            var canvas = document.getElementById('canvas-banner');
+            canvas.width = window.document.body.clientWidth - 10;//减去滚动条的宽度
+            if (screen.width >= 992) {
+                canvas.height = window.innerHeight * 1 / 3;
+            } else {
+                canvas.height = window.innerHeight * 2 / 7;
+            }
+        </script>
+        <!-- 这个一般才是真正的主体内容 -->
+        <div class="blog-container">
+            <div class="blog-main">
+                <!-- 网站公告提示 -->
+                <div class="home-tips shadow">
+                    <i style="float:left;line-height:17px;" class="fa fa-volume-up"></i>
+                    <div class="home-tips-container">
+                        <span style="color: #009688">design by 赵朋玉</span>
+                        <span style="color: red">博客网站试运行！</span>
+                    </div>
+                </div>
+                <!--左边文章列表-->
+                <div class="blog-main-left">
+                    <div class="article shadow" th:each="list1: ${list}">
+                        <div class="article-left">
+                            <img src="../images/cover/201703181909057125.jpg" alt="超级码力" />
+                        </div>
+                        <div class="article-right">
+                            <div class="article-title">
+                                <a th:href="@{'/detail/'+${list1.getId()}}" th:text="${list1.getTitle()}"></a>
+                            </div>
+                            <div class="article-abstract" th:text="${list1.getDescribe()}"></div>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="article-footer">
+                            <span><i class="fa fa-clock-o"></i>&nbsp;&nbsp;<span th:text="${list1.getTime()}"></span></span>
+                            <span class="article-author"><i class="fa fa-user"></i>&nbsp;&nbsp;<span th:text="${list1.getUsername()}"></span></span>
+                            <span><i class="fa fa-tag"></i>&nbsp;&nbsp;<a th:href="@{'/category/'+${list1.getTag()}}"><span th:text="${list1.getTag()}"></span></a></span>
+                            <span class="article-viewinfo"><i class="fa fa-heart"></i>&nbsp;<span th:text="${list1.getPage_view()}"></span></span>
+                        </div>
+                    </div>
+                </div>
+                <!--右边小栏目-->
+                <div class="blog-main-right">
+                    <div class="blogerinfo shadow">
+                        <div class="blogerinfo-figure">
+                            <img src="../images/pengyu.jpg" alt="" />
+                        </div>
+                        <p class="blogerinfo-nickname" th:text="${own}"></p>
+                        <p class="blogerinfo-location"><i class="fa fa-location-arrow"></i>&nbsp;<span th:text="${address}"></span></p>
+                        <hr />
+                        <div class="blogerinfo-contact">
+                            <a target="_blank" title="QQ交流" href=""><i class="fa fa-qq fa-2x"></i></a>
+                            <a target="_blank" title="给我写信" href=""><i class="fa fa-envelope fa-2x"></i></a>
+                            <a target="_blank" title="码云" href=""><i class="fa fa-git fa-2x"></i></a>
+                        </div>
+                    </div>
+                    <div></div><!--占位-->
+                    <div class="blog-module shadow">
+                        <div class="blog-module-title">标签分类</div>
+                        <ul class="fa-ul blog-module-ul">
+                            <li th:each="tag1:${tag}"><i class="fa-li fa fa-hand-o-right"></i><a th:href="@{'/category/'+${tag1.getTag()}}" target="_blank" th:text="${tag1.getTag()}"></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <!-- 底部 -->
+    <footer class="blog-footer">
+        <p><span>Design By 赵朋玉 2019</span></p>
+        <p><a href="" target="_blank"></a></p>
+    </footer>
+    <!--侧边导航-->
+    <ul class="layui-nav layui-nav-tree layui-nav-side blog-nav-left layui-hide" lay-filter="nav">
+        <li class="layui-nav-item layui-this">
+            <a href="/home"><i class="fa fa-home fa-fw"></i>&nbsp;网站首页</a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="/article"><i class="fa fa-file-text fa-fw"></i>&nbsp;文章专栏</a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="/resource"><i class="fa fa-tags fa-fw"></i>&nbsp;资源分享</a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="/timeline"><i class="fa fa-road fa-fw"></i>&nbsp;点点滴滴</a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="/about"><i class="fa fa-info fa-fw"></i>&nbsp;关于本站</a>
+        </li>
+    </ul>
+    <!--分享窗体-->
+    <!--<div class="blog-share layui-hide">
+        <div class="blog-share-body">
+            <div style="width: 200px;height:100%;">
+                <div class="bdsharebuttonbox">
+                    <a class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+                    <a class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                    <a class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                    <a class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <!--遮罩-->
+    <div class="blog-mask animated layui-hide"></div>
+    <!-- layui.js -->
+    <script src="../plug/layui/layui.js"></script>
+    <!-- 全局脚本 -->
+    <script src="../js/global.js"></script>
+    <!-- 本页脚本 -->
+    <script src="../js/home.js"></script>
+</body>
+</html>

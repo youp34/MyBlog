@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+	<head>
+		<!-- meta -->
+		<meta charset="utf-8">
+		<!-- 编码 -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!-- 以上代码告诉IE浏览器，IE8/9及以后的版本都会以最高版本IE来渲染页面 -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<!-- 移动端页面适应:width - viewport的宽度
+						height - viewport的高度 
+						initial-scale - 初始的缩放比例
+						minimum-scale - 允许用户缩放到的最小比例   
+						maximum-scale - 允许用户缩放到的最大比例  
+						user-scalable - 用户是否可以手动缩放  -->
+		<!-- 上述3个meta标签必须放在最前面，任何其他内容都必须跟随其后！ Bootstrap3格式 -->
+		
+		<title>超级码力- 博客后台管理系统</title>
+		
+		<!-- css -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/styles.css" rel="stylesheet">
+
+		<!-- js -->
+		<!--[if lt IE 9]>
+		  <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	
+	<body>
+	<section class="container-fluid">
+		<header>
+			<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="#">超级码力- 博客后台管理系统</a>
+					</div>
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span th:text="${identity}"></span> <span class="caret"></span></a>
+								<ul class="dropdown-menu dropdown-menu-left">
+									<li><a href="/logout" onClick="if(!confirm('是否确认退出？'))return false;">退出登录</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</header>
+		
+		<div class="row">
+			<aside class="col-sm-3 col-md-2 col-lg-2 sidebar">
+				<ul class="nav nav-sidebar">
+					<li><a href="/index">概况</a></li>
+					<li><a href="/articles">文章</a></li>
+					<li><a href="/category">文章分类</a></li>
+					<li class="active"><a href="/user">用户</a></li>
+					<li><a href="/line">时光轴</a></li>
+					<li><a href="/information">个人信息</a></li>
+					<li><a href="/setting">设置</a></li>
+				</ul>
+			</aside>
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+				<h3>查看</h3>
+				<div>
+					<table class="table table-striped table-hover">
+						<thead>
+							<tr>
+								<th><span class="glyphicon glyphicon-file"></span>用户ID</th>
+								<th><span class="glyphicon glyphicon-list"></span>用户名</th>
+								<th><span class="glyphicon glyphicon-list"></span>Email</th>
+								<th class="hidden-sm"><span class="glyphicon glyphicon-comment"></span>用户权限</th>
+								<th><span class="glyphicon glyphicon-pencil"></span>更改权限</th>
+								<th><span class="glyphicon glyphicon-pencil"></span>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="list1: ${list}">
+								<td th:text="${list1.getId()}"></td>
+								<td th:text="${list1.getUsername()}"></td>
+								<td th:text="${list1.getEmail()}"></td>
+								<td th:text="${list1.getPermission()}=='1'?'管理员':'用户'"></td>
+								<td><a th:text="${list1.getPermission()}=='1'?'设为普通用户':'设为管理员'"
+									   th:href="@{'set_power/'+${list1.getId()}}"></a></td>
+								<td><a th:href="@{'/delete_user/'+${list1.getId()}}">删除</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<div class="clearfix">
+					<div class="pull-right">
+						<ul class="pagination pagenav">
+							<li class="disabled"><a aria-label="Previous"> <span aria-hidden="true">&laquo;</span></a></li>
+							<li class="active"><a href="#">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">5</a></li>
+							<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	</section>
+		<!-- jQuery  -->
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+	</body>
+</html>

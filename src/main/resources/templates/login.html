@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang='zh' xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>超级码力- 登录</title>
+	<style>
+		/*主体部分样式*/
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: sans-serif;
+			background: url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1561611916356&di=a80b01f66d57237932a268463496778f&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2F2018-01-16%2F5a5dc3f3588b6.jpg) no-repeat;
+			background-size: cover;
+			background-color: black;
+		}
+		 
+		/*登录盒子样式*/
+		.login-box {
+			width: 280px;
+			position: absolute;
+			top: 35%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+			color: white;
+		}
+		 
+		/*E-boy网咖字体样式*/
+		.login-box h1 {
+			float: left;
+			font-size: 40px;
+			border-bottom: 6px solid #4caf50;
+			margin-bottom: 50px;
+			padding: 13px 0;
+		}
+		 
+		.textbox {
+			width: 100%;
+			overflow: hidden;
+			font-size: 20px;
+			padding: 8px 0;
+			margin: 8px 0;
+			border-bottom: 1px solid #4caf50;
+		}
+		 
+		/*图标样式*/
+		.textbox i {
+			width: 26px;
+			float: left;
+			text-align: center;
+		}
+		 
+		/*表单文本框样式*/
+		.textbox input {
+			border: none;
+			outline: none;
+			background: none;
+			color: white;
+			font-size: 18px;
+			width: 80%;
+			float: left;
+			margin: 0 10px;
+		}
+		 
+		/*表单登录按钮样式*/
+		.btn {
+			width: 100%;
+			background: none;
+			border: 2px solid #4caf50;
+			color: white;
+			padding: 5px;
+			font-size: 18px;
+			cursor: pointer;
+			margin: 12px 0;
+		}
+	</style>
+	<script type="text/javascript">
+			function check(){
+				var passwordMsg = document.getElementById("passwordMsg");
+				
+				var username = document.getElementById("username");
+				var usernameMsg = document.getElementById("usernameMsg");
+				
+				var isPass = true;
+				
+				var length = username.value.length;
+				if(length<3 || length>6){
+//					alert("用户名长度必须是3-6位");
+					usernameMsg.innerText= "用户名长度必须是3-6位";
+					isPass = false;
+				}else{
+					usernameMsg.innerText= "";
+				}
+				
+				var password = document.getElementById("password").value;
+				if(password.length<6 || password.length>10){
+//					alert("密码必须在6-10位之间");
+					passwordMsg.innerText="密码必须在6-10位之间"
+					isPass=false;
+				}else{
+					passwordMsg.innerText=""
+				}
+				return isPass;
+			}
+			//onblur失去焦点的时候调用
+			function checkUsername(username){
+				var usernameMsg = document.getElementById("usernameMsg");
+				
+				var length = username.value.length;
+				if(length<3 || length>6){
+					usernameMsg.innerText= "用户名长度必须是3-6位";
+				}else{
+					usernameMsg.innerText= "";
+				}
+			}
+			function checkPassword(){
+				var passwordMsg = document.getElementById("passwordMsg");
+				var password = document.getElementById("password");
+				if(password.value.length<6 || password.value.length>10){
+					passwordMsg.innerText="密码必须在6-10位之间"
+					isPass=false;
+				}else{
+					passwordMsg.innerText=""
+				}
+			}
+		</script>
+</head>
+<body>
+    <div style="margin-top: 20px;
+                margin-right: 50px;
+                font-size: 20px;
+                color: white;
+                float: right;
+                border-style:solid ;
+	            border-width:1px;
+                padding: 5px">
+        <a href="/register" style="text-decoration:none; color: white;">
+            注 册
+        </a>
+    </div>
+    <form class ="login-box" onsubmit="return check()" action="/login" method="post">
+        <h1>超级码力-博客</h1>
+        <div class="textbox">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            <input type="text" placeholder="请输入用户名" name="username" id="username" onblur="checkUsername(this)"/>
+        </div> 
+		<p><font color="red" id="usernameMsg"></font></p>
+        <div class="textbox">
+            <i class="fa fa-lock" aria-hidden="true"></i>
+            <input type="password" placeholder="请输入密码" name="password" id="password" onblur="checkPassword()"/>
+        </div>
+		<p><font color="red" id="passwordMsg"></font></p>
+        <p th:text="${error}" style="color: red"> </p>
+        <input class="btn" type="submit" value="登 录"/>
+    </form>
+</body>
+</html>

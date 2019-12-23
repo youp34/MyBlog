@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang='zh' xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<!-- meta -->
+		<meta charset="utf-8">
+		<!-- 编码 -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!-- 以上代码告诉IE浏览器，IE8/9及以后的版本都会以最高版本IE来渲染页面 -->
+		<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<!-- 移动端页面适应:width - viewport的宽度
+						height - viewport的高度
+						initial-scale - 初始的缩放比例
+						minimum-scale - 允许用户缩放到的最小比例
+						maximum-scale - 允许用户缩放到的最大比例
+						user-scalable - 用户是否可以手动缩放  -->
+		<!-- 上述3个meta标签必须放在最前面，任何其他内容都必须跟随其后！ Bootstrap3格式 -->
+
+		<title>超级码力- 博客后台管理系统</title>
+
+		<!-- css -->
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/static/css/styles.css" rel="stylesheet">
+		<link href="/static/css/wangEditor.min.css" rel="stylesheet" type="text/css">
+
+		<link rel="stylesheet" th:href="@{/markdown/css/style.css}" >
+		<link rel="stylesheet" href="/static/markdown/css/editormd.css"/>
+		<link rel="shortcut icon" href="https://pandao.github.io/editor.md/favicon.ico" type="image/x-icon" />
+		<!-- js -->
+		<!--[if lt IE 9]>
+		  <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+	<section class="container-fluid">
+		<header>
+			<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="#">超级码力- 博客后台管理系统</a>
+					</div>
+					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span th:text="${identity}"></span><span class="caret"></span></a>
+								<ul class="dropdown-menu dropdown-menu-left">
+									<li><a href="/logout" onClick="if(!confirm('是否确认退出？'))return false;">退出登录</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</header>
+
+		<div class="row">
+			<aside class="col-sm-3 col-md-2 col-lg-2 sidebar">
+				<ul class="nav nav-sidebar">
+					<li><a href="/index">概况</a></li>
+					<li class="active"><a href="/articles">文章</a></li>
+					<li><a href="/category">文章分类</a></li>
+					<li><a href="/user">用户</a></li>
+					<li><a href="/line">时光轴</a></li>
+					<li><a href="/information">个人信息</a></li>
+					<li><a href="/setting">设置</a></li>
+				</ul>
+			</aside>
+			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+				<h3>发布文章</h3>
+				<form action="/editearticle" method="post" enctype="multipart/form-data">
+					<div class="form-group">
+						<label for="article_category" style="margin-top: 20px">文章分类</label>
+						<select class="form-control" id="article_category" name="category">
+							<option th:each="tag1: ${tag}" th:text="${tag1.getTag()}"></option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="article_title">文章标题</label>
+						<input type="text" class="form-control" id="article_title" name="title" placeholder="请输入文章标题">
+					</div>
+					<div class="form-group">
+						<label>文章描述</label>
+						<input type="text" class="form-control"  name="describe" placeholder="请输入文章描述">
+					</div>
+					<div id="layout">
+						<div id="test-editormd" class="editormd">
+							<textarea class="editormd-markdown-textarea" style="display:none;" name="test-editormd-markdown-doc"></textarea>
+							<textarea class="editormd-html-textarea" id="content" name="content"></textarea>
+						</div>
+					</div>
+
+					<button type="submit" class="btn btn-default">发布</button>
+				</form>
+			</div>
+		</div>
+
+	</section>
+		<!-- jQuery  -->
+	<script src="/static/markdown/js/jquery.min.js"></script>
+	<script src="/static/markdown/editormd.min.js"></script>
+	<script type="text/javascript">
+		var testEditor;
+		$(function() {
+			testEditor = editormd("test-editormd", {
+				width   : "100%",
+				height  : 640,
+				syncScrolling : "single",
+				path    : "../lib/",
+				imageUpload : true,
+				imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+				imageUploadURL : "/uploadimages",
+				saveHTMLToTextarea : true
+			});
+		});
+	</script>
+	</body>
+</html>

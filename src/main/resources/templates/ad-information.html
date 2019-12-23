@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- meta -->
+    <meta charset="utf-8">
+    <!-- 编码 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 以上代码告诉IE浏览器，IE8/9及以后的版本都会以最高版本IE来渲染页面 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- 移动端页面适应:width - viewport的宽度
+                    height - viewport的高度
+                    initial-scale - 初始的缩放比例
+                    minimum-scale - 允许用户缩放到的最小比例
+                    maximum-scale - 允许用户缩放到的最大比例
+                    user-scalable - 用户是否可以手动缩放  -->
+    <!-- 上述3个meta标签必须放在最前面，任何其他内容都必须跟随其后！ Bootstrap3格式 -->
+
+    <title>超级码力- 博客后台管理系统</title>
+
+    <!-- css -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+
+    <!-- js -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        function check(){
+            var emailMsg = document.getElementById("emailMsg");
+            var addressMsg = document.getElementById("addressMsg");
+            var qqMsg = document.getElementById("qqMsg");
+            var githubMsg = document.getElementById("githubMsg");
+            var describeMsg = document.getElementById("describeMsg");
+
+            var isPass = true;
+
+            var address = document.getElementById("address");
+            var length1 = address.value.length;
+            if(length1<3 || length1>20){
+//					alert("用户名长度必须是3-6位");
+                addressMsg.innerText= "住址长度必须是3-20位";
+                isPass = false;
+            }else{
+                addressMsg.innerText= "";
+            }
+
+            var qq = document.getElementById("qq");
+            var length2 = qq.value.length;
+            if(length2<5 || length2>10){
+//					alert("用户名长度必须是3-6位");
+                qqMsg.innerText= "QQ长度必须是5-10位";
+                isPass = false;
+            }else{
+                qqMsg.innerText= "";
+            }
+
+            var email = document.getElementById("email").value;
+            var p = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+            if(p.test(email)==false){
+//					alert("邮箱格式不正确");
+                emailMsg.innerText="邮箱格式不正确";
+                isPass = false;
+            }else{
+                emailMsg.innerText="";
+            }
+
+            var github = document.getElementById("github");
+            var length3 = github.value.length;
+            if(length3<5 || length3>50){
+//					alert("用户名长度必须是3-6位");
+                githubMsg.innerText= "GitHub长度必须是5-50位";
+                isPass = false;
+            }else{
+                githubMsg.innerText= "";
+            }
+
+            var describe = document.getElementById("describe");
+            var length4 = describe.value.length;
+            if(length4<3 || length4>300){
+//					alert("用户名长度必须是3-6位");
+                describeMsg.innerText= "住址长度必须是3-300位";
+                isPass = false;
+            }else{
+                describeMsg.innerText= "";
+            }
+            return isPass;
+        }
+        //onblur失去焦点的时候调用
+        function checkEmail(email){
+            var emailMsg = document.getElementById("emailMsg");
+            var p = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+            if(p.test(email.value)==false){
+                emailMsg.innerText="邮箱格式不正确";
+            }else{
+                emailMsg.innerText="";
+            }
+        }
+        function checkAddress(address){
+            var usernameMsg = document.getElementById("addressMsg");
+
+            var length = address.value.length;
+            if(length<3 || length>20){
+                usernameMsg.innerText= "住址长度必须是3-20位";
+            }else{
+                usernameMsg.innerText= "";
+            }
+        }
+        function checkqq(qq){
+            var usernameMsg = document.getElementById("qqMsg");
+
+            var length = qq.value.length;
+            if(length<5 || length>10){
+                usernameMsg.innerText= "QQ长度必须是5-10位";
+            }else{
+                usernameMsg.innerText= "";
+            }
+        }
+        function checkGithub(github){
+            var usernameMsg = document.getElementById("githubMsg");
+
+            var length = github.value.length;
+            if(length<5 || length>50){
+                usernameMsg.innerText= "GitHub地址长度必须是5-50位";
+            }else{
+                usernameMsg.innerText= "";
+            }
+        }
+        function checkDescribe(describe){
+            var usernameMsg = document.getElementById("describeMsg");
+
+            var length = describe.value.length;
+            if(length<3 || length>300){
+                usernameMsg.innerText= "个人描述长度必须是3-300位";
+            }else{
+                usernameMsg.innerText= "";
+            }
+        }
+    </script>
+</head>
+
+<body>
+<section class="container-fluid">
+    <header>
+        <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">超级码力- 博客后台管理系统</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span th:text="${identity}"></span> <span class="caret"></span></a>
+                            <ul class="dropdown-menu dropdown-menu-left">
+                                <li><a href="/logout" onClick="if(!confirm('是否确认退出？'))return false;">退出登录</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="row">
+        <aside class="col-sm-3 col-md-2 col-lg-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li><a href="/index">概况</a></li>
+                <li><a href="/articles">文章</a></li>
+                <li><a href="/category">文章分类</a></li>
+                <li><a href="/user">用户</a></li>
+                <li><a href="/line">时光轴</a></li>
+                <li class="active"><a href="/information">个人信息</a></li>
+                <li><a href="/setting">设置</a></li>
+            </ul>
+        </aside>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+            <h3>用户信息</h3>
+            <div>
+                <div style="height: 500px;width: 490px;float: left;background-color: white;margin-left: 40px; margin-top: 20px; overflow:auto;">
+                    <div style="padding: 70px">
+                        <p style="font-size: 20px; margin-top: 30px"><strong>用户名：</strong><span>hahaha</span></p>
+                        <p style="font-size: 20px; margin-top: 30px"><strong>住址：</strong><span>hahaha</span></p>
+                        <p style="font-size: 20px; margin-top: 30px"><strong>QQ：</strong><span>hahaha</span></p>
+                        <p style="font-size: 20px; margin-top: 30px"><strong>Email：</strong><span>hahaha</span></p>
+                        <p style="font-size: 20px; margin-top: 30px"><strong>GitHub：</strong><span>hahaha</span></p>
+                        <p style="font-size: 20px; margin-top: 30px"><strong>个人描述：</strong><span>hahaha</span></p>
+                    </div>
+                </div>
+                <div style="height: 500px;width: 490px;float: right;background-color: white;margin-right: 60px; margin-top: 20px; overflow:auto;">
+                    <div style="padding: 70px">
+                        <h3>修改</h3>
+                        <form action="/gyugu" method="post" onsubmit="return check()">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="address" id="address" onblur="checkAddress(this)" placeholder="修改住址为">
+                            </div>
+                            <p><font color="red" id="addressMsg"></font></p>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="qq" id="qq" onblur="checkqq(this)" placeholder="修改QQ为">
+                            </div>
+                            <p><font color="red" id="qqMsg"></font></p>
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="email" id="email" onblur="checkEmail(this)" placeholder="修改Email为">
+                            </div>
+                            <p><font color="red" id="emailMsg"></font></p>
+                            <div class="form-group">
+                                <input type="text" name="github" class="form-control" id="github" onblur="checkGithub(this)" placeholder="修改GitHub为">
+                            </div>
+                            <p><font color="red" id="githubMsg"></font></p>
+                            <div class="form-group">
+                                <input type="text" name="describe" class="form-control" id="describe" onblur="checkDescribe(this)" placeholder="修改个人描述">
+                            </div>
+                            <p><font color="red" id="describeMsg"></font></p>
+                            <input type="submit" class="btn btn-default" value="提 交">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- jQuery  -->
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
