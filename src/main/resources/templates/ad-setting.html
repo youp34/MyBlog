@@ -182,7 +182,7 @@
                         </tbody>
                     </table>
                     <h5>添加</h5>
-                    <form action="/gyugu" method="post" onsubmit="return check()">
+                    <form action="/set_notice" method="post" onsubmit="return check()">
                         <div class="form-group">
                             <input type="text" class="form-control" name="notice" id="notice" placeholder="添加公告">
                         </div>
@@ -210,7 +210,7 @@
                     </tbody>
                 </table>
                 <h5>添加</h5>
-                <form action="/gyugu" method="post" onsubmit="return check1()">
+                <form action="/set_link" method="post" onsubmit="return check1()">
                     <div class="form-group">
                         <input type="text" class="form-control" name="name" id="name" placeholder="名称">
                     </div>
@@ -224,9 +224,9 @@
             </div>
             <div style="padding: 10px; height: 300px;width: 100%;background-color: white; margin-bottom: 20px; overflow:auto;">
                 <h4>修改密码</h4>
-                <form action="/gyugu" method="post" onsubmit="return check2()">
+                <form action="/change_password" method="post" onsubmit="return check2()">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="oldpassword" name="aldpassword" onblur="checkPassword1()" placeholder="初始密码">
+                        <input type="text" class="form-control" id="oldpassword" name="oldpassword" onblur="checkPassword1()" placeholder="初始密码">
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" id="password" name="password" onblur="checkPassword()" placeholder="新的密码">

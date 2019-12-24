@@ -21,4 +21,6 @@ public interface UserMapper {
     void setPower(@Param("permission")String permission, @Param("id")int id);
     @Insert("insert into blog_admin_user(username,password,description,address,qq,email,github,permission) values (#{username},#{password},#{description},#{address},#{qq},#{email},#{github},#{permission})")
     void registerUser(@Param("username")String username,@Param("password")String password,@Param("description")String description,@Param("address")String address,@Param("qq")String qq,@Param("email")String email,@Param("github")String github,@Param("permission")String permission);
+    @Update("update blog_admin_user set address=#{address}, qq=#{qq}, email=#{email}, github=#{github},description=#{description} where username=#{username}")
+    void setInformation(@Param("address")String address,@Param("qq")String qq,@Param("email")String email,@Param("github")String github,@Param("description")String description,@Param("username")String username);
 }

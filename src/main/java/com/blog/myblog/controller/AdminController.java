@@ -358,7 +358,7 @@ public class AdminController {
         }
     }
     /**
-     * 用户管理
+     * 设置
      */
     @RequestMapping(value = "/setting", method = RequestMethod.GET)
     public String setting_get(HttpSession session, Model model){
@@ -373,6 +373,48 @@ public class AdminController {
         }
     }
     /**
+     * 公告管理
+     */
+    @RequestMapping(value = "/set_notice", method = RequestMethod.POST)
+    public String setting_notice(HttpSession session, Model model){
+        String username = (String) session.getAttribute("user");
+        AdminUser login = loginservice.findloginuser(username);
+        if ("1".equals(login.getPermission())){
+            return "redirect:/setting";
+        } else {
+            model.addAttribute("error","没有权限访问此页面！");
+            return "error";
+        }
+    }
+    /**
+     * 友情链接管理
+     */
+    @RequestMapping(value = "/set_link", method = RequestMethod.POST)
+    public String setting_link(HttpSession session, Model model){
+        String username = (String) session.getAttribute("user");
+        AdminUser login = loginservice.findloginuser(username);
+        if ("1".equals(login.getPermission())){
+            return "redirect:/setting";
+        } else {
+            model.addAttribute("error","没有权限访问此页面！");
+            return "error";
+        }
+    }
+    /**
+     * 修改密码
+     */
+    @RequestMapping(value = "/change_password", method = RequestMethod.POST)
+    public String setting_password(HttpSession session, Model model){
+        String username = (String) session.getAttribute("user");
+        AdminUser login = loginservice.findloginuser(username);
+        if ("1".equals(login.getPermission())){
+            return "redirect:/setting";
+        } else {
+            model.addAttribute("error","没有权限访问此页面！");
+            return "error";
+        }
+    }
+    /**
      * 个人信息
      */
     @RequestMapping(value = "/information", method = RequestMethod.GET)
@@ -381,7 +423,29 @@ public class AdminController {
         AdminUser login = loginservice.findloginuser(username);
         if ("1".equals(login.getPermission())){
             model.addAttribute("identity",username);
+            AdminUser user = loginservice.findloginuser(username);
+            model.addAttribute("user",user);
             return "ad-information";
+        } else {
+            model.addAttribute("error","没有权限访问此页面！");
+            return "error";
+        }
+    }
+    /**
+     * 修改个人信息
+     */
+    @RequestMapping(value = "/set_information", method = RequestMethod.POST)
+    public String set_information( Model model,HttpSession session, @RequestParam("address")String address,@RequestParam("qq")String qq,@RequestParam("email")String email,@RequestParam("github")String gtihub,@RequestParam("describe")String describe){
+        String username = (String) session.getAttribute("user");
+        AdminUser login = loginservice.findloginuser(username);
+        if ("1".equals(login.getPermission())){
+            if ("".equals(address) || "".equals(qq) || "".equals(gtihub) || "".equals(describe) || "".equals(email)){
+                model.addAttribute("error","您的操作有误！");
+                return "error";
+            } else {
+                loginservice.setInformation(address,qq,email,gtihub,describe,username);
+                return "redirect:/information";
+            }
         } else {
             model.addAttribute("error","没有权限访问此页面！");
             return "error";

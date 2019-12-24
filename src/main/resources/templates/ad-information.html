@@ -178,18 +178,18 @@
             <div>
                 <div style="height: 500px;width: 490px;float: left;background-color: white;margin-left: 40px; margin-top: 20px; overflow:auto;">
                     <div style="padding: 70px">
-                        <p style="font-size: 20px; margin-top: 30px"><strong>用户名：</strong><span>hahaha</span></p>
-                        <p style="font-size: 20px; margin-top: 30px"><strong>住址：</strong><span>hahaha</span></p>
-                        <p style="font-size: 20px; margin-top: 30px"><strong>QQ：</strong><span>hahaha</span></p>
-                        <p style="font-size: 20px; margin-top: 30px"><strong>Email：</strong><span>hahaha</span></p>
-                        <p style="font-size: 20px; margin-top: 30px"><strong>GitHub：</strong><span>hahaha</span></p>
-                        <p style="font-size: 20px; margin-top: 30px"><strong>个人描述：</strong><span>hahaha</span></p>
+                        <p style="font-size: 20px; margin-top: 30px"><strong>用户名：</strong><span th:text="${user.getUsername()}"></span></p>
+                        <p style="font-size: 20px; margin-top: 30px"><strong>住址：</strong><span th:text="${user.getAddress()}"></span></p>
+                        <p style="font-size: 20px; margin-top: 30px"><strong>QQ：</strong><span th:text="${user.getQq()}"></span></p>
+                        <p style="font-size: 20px; margin-top: 30px"><strong>Email：</strong><span th:text="${user.getEmail()}"></span></p>
+                        <p style="font-size: 20px; margin-top: 30px"><strong>GitHub：</strong><span th:text="${user.getGithub()}"></span></p>
+                        <p style="font-size: 20px; margin-top: 30px"><strong>个人描述：</strong><span th:text="${user.getDescription()}"></span></p>
                     </div>
                 </div>
                 <div style="height: 500px;width: 490px;float: right;background-color: white;margin-right: 60px; margin-top: 20px; overflow:auto;">
                     <div style="padding: 70px">
                         <h3>修改</h3>
-                        <form action="/gyugu" method="post" onsubmit="return check()">
+                        <form action="/set_information" method="post" onsubmit="return check()">
                             <div class="form-group">
                                 <input type="text" class="form-control" name="address" id="address" onblur="checkAddress(this)" placeholder="修改住址为">
                             </div>
