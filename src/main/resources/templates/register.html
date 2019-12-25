@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang='zh' xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>超级码力- 注册</title>
+    <link rel="icon" href="../images/Logo_40.ico" type="image/x-icon">
 	<style>
 		/*主体部分样式*/
 		body {
@@ -75,15 +76,45 @@
         .a {
             margin-top: 20px;
             margin-left: 50px;
-            font-size: 20px;
+            font-size: 15px;
             color: white;
             float: left;
             border-style:solid ;
             border-width:1px;
-            padding: 6px
+            padding: 4px
+        }
+        .code {
+            background-image:url(111.jpg);
+            font-family:Arial,宋体;
+            font-style:italic;
+            color:green;
+            border:0;
+            padding:2px 3px;
+            letter-spacing:3px;
+            font-weight:bolder;
+        }
+        .unchanged {
+            border:0;
         }
 	</style>
 	<script type="text/javascript">
+        window.onload = createCode;
+        var code; //在全局 定义验证码
+        function createCode() {
+            code = new Array();
+            var codeLength = 4; //验证码的长度
+            var checkCode = document.getElementById("checkCode");
+            checkCode.value = "";
+            var selectChar = new Array(2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+            for (var i = 0; i < codeLength; i++) {
+                var charIndex = Math.floor(Math.random() * 32);
+                code += selectChar[charIndex];
+            }
+            if (code.length != codeLength) {
+                createCode();
+            }
+            checkCode.value = code;
+        }
 		function check(){
 			var emailMsg = document.getElementById("emailMsg");
 			var passwordMsg = document.getElementById("passwordMsg");
@@ -128,6 +159,16 @@
 					passwordMsg.innerText="";
 				}
 			}
+            // 验证码
+            var inputCode = document.getElementById("input1").value.toUpperCase();
+            if (inputCode.length <= 0) {
+                numberMsg.innerText="请输入验证码";
+                isPass=false;
+            } else if (inputCode != code) {
+                numberMsg.innerText="验证码输入错误";
+                createCode();
+                isPass=false;
+            }
 			return isPass;
 		}
 		//onblur失去焦点的时候调用
@@ -156,12 +197,10 @@
 			var rePassword = document.getElementById("rePassword").value;
 			if(password.value.length<6 || password.value.length>10){
 				passwordMsg.innerText="密码必须在6-10位之间"
-				isPass=false;
 			}else{
 				passwordMsg.innerText=""
 				if(password.value!=rePassword){
 					passwordMsg.innerText="两次输入密码不一致";
-					isPass=false;
 				}else{
 					passwordMsg.innerText="";
 				}
@@ -196,6 +235,12 @@
             <input type="text" placeholder="请输入你的邮箱" name="email" id="email" onblur="checkEmail(this)"/>
         </div> 
 		<p><font color="red" id="emailMsg"></font></p>
+        <div class="textbox">
+            <i class="fa fa-lock" aria-hidden="true"></i>
+            <input type="text" placeholder="请输入验证码" style="width: 160px" id="input1"/>
+            <input type="button" id="checkCode" class="code" style="width:80px; height: 30px; float: right; border-width:1px; background-color: black" onclick="createCode()">
+        </div>
+        <p><font color="red" id="numberMsg"></font></p>
         <p th:text="${status}" style="color: red"> </p>
         <input class="btn" type="submit" value="注 册"/>
     </form>
