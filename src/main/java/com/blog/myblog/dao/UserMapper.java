@@ -23,4 +23,6 @@ public interface UserMapper {
     void registerUser(@Param("username")String username,@Param("password")String password,@Param("description")String description,@Param("address")String address,@Param("qq")String qq,@Param("email")String email,@Param("github")String github,@Param("permission")String permission);
     @Update("update blog_admin_user set address=#{address}, qq=#{qq}, email=#{email}, github=#{github},description=#{description} where username=#{username}")
     void setInformation(@Param("address")String address,@Param("qq")String qq,@Param("email")String email,@Param("github")String github,@Param("description")String description,@Param("username")String username);
+    @Update("update blog_admin_user set password=#{password} where username=#{username}")
+    void setPassword(@Param("password")String password, @Param("username")String username);
 }

@@ -15,4 +15,5 @@ public interface Loginservice {
     void setPower(String permission,int id);
     void registerUser(String username,String password,String description,String address,String qq,String email,String github,String permission);
     void setInformation(String address,String qq,String email,String github,String description,String username);
+    void setPassword(String password,String username);
 }

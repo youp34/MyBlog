@@ -148,11 +148,11 @@
                                     <legend>Friend Link</legend>
                                     <div class="layui-field-box">
                                         <ul class="friendlink">
-                                            <li>
-                                                <a target="_blank" href="http://www.layui.com/" title="Layui" class="friendlink-item">
-                                                    <p class="friendlink-item-pic"><img src="http://www.layui.com/favicon.ico" alt="Layui" /></p>
-                                                    <p class="friendlink-item-title">Layui</p>
-                                                    <p class="friendlink-item-domain">layui.com</p>
+                                            <li th:each="link: ${links}">
+                                                <a target="_blank" th:href="${link.getUrl()}" th:title="${link.getName()}" class="friendlink-item">
+                                                    <p class="friendlink-item-pic"><img th:src="@{${link.getUrl()}+'/favicon.ico'}"/></p>
+                                                    <p class="friendlink-item-title" th:text="${link.getName()}"></p>
+                                                    <p class="friendlink-item-domain" th:text="${link.getUrl()}"></p>
                                                 </a>
                                             </li>
                                         </ul>

@@ -50,4 +50,9 @@ public class LoginserviceImpl implements Loginservice {
     public void setInformation(String address, String qq, String email, String github, String description, String username) {
         userMapper.setInformation(address,qq,email,github,description,username);
     }
+
+    @Override
+    public void setPassword(String password, String username) {
+        userMapper.setPassword(password,username);
+    }
 }

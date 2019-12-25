@@ -70,8 +70,7 @@
                 <div class="home-tips shadow">
                     <i style="float:left;line-height:17px;" class="fa fa-volume-up"></i>
                     <div class="home-tips-container">
-                        <span style="color: #009688">design by 赵朋玉</span>
-                        <span style="color: red">博客网站试运行！</span>
+                        <span style="color: #009688" th:each="notice: ${notices}"><span th:text="${notice.getNotice()}"></span></span>
                     </div>
                 </div>
                 <!--左边文章列表-->

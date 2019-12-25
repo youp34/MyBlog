@@ -174,11 +174,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>dfasdfasdfdfg</td>
-                            <td><a href="">删除</a></td>
+                        <tr th:each="notice: ${notices}">
+                            <td th:text="${notice.getNotice()}"></td>
+                            <td><a th:href="@{'/delete_notice/'+${notice.getId()}}">删除</a></td>
                         </tr>
-
                         </tbody>
                     </table>
                     <h5>添加</h5>
@@ -202,10 +201,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>啊啊啊</td>
-                        <td>http://baidu.com</td>
-                        <td><a href="">删除</a></td>
+                    <tr th:each="link: ${links}">
+                        <td th:text="${link.getName()}"></td>
+                        <td th:text="${link.getUrl()}"></td>
+                        <td><a th:href="@{'/delete_link/'+${link.getId()}}">删除</a></td>
                     </tr>
                     </tbody>
                 </table>
@@ -226,13 +225,13 @@
                 <h4>修改密码</h4>
                 <form action="/change_password" method="post" onsubmit="return check2()">
                     <div class="form-group">
-                        <input type="text" class="form-control" id="oldpassword" name="oldpassword" onblur="checkPassword1()" placeholder="初始密码">
+                        <input type="password" class="form-control" id="oldpassword" name="oldpassword" onblur="checkPassword1()" placeholder="初始密码">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="password" name="password" onblur="checkPassword()" placeholder="新的密码">
+                        <input type="password" class="form-control" id="password" name="password" onblur="checkPassword()" placeholder="新的密码">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="repassword" onblur="checkPassword()" placeholder="再次输入你的新密码">
+                        <input type="password" class="form-control" id="repassword" onblur="checkPassword()" placeholder="再次输入你的新密码">
                     </div>
                     <input type="submit" class="btn btn-default" value="提 交">
                     <p><font color="red" id="passMsg"></font></p>

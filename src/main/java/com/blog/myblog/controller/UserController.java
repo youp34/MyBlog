@@ -2,12 +2,8 @@ package com.blog.myblog.controller;
 
 
 import com.blog.myblog.component.FastDFSClientWrapper;
-import com.blog.myblog.pojo.AdminUser;
-import com.blog.myblog.pojo.Article;
-import com.blog.myblog.pojo.Tag;
-import com.blog.myblog.service.ArticleserviceImpl;
-import com.blog.myblog.service.LoginserviceImpl;
-import com.blog.myblog.service.Tagservice;
+import com.blog.myblog.pojo.*;
+import com.blog.myblog.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -31,6 +27,10 @@ public class UserController {
     FastDFSClientWrapper fastDFSClientWrapper;
     @Autowired
     ArticleserviceImpl articleservice;
+    @Autowired
+    private Linkservice linkservice;
+    @Autowired
+    private Noticeservice noticeservice;
     @Value("${blog.user}")
     private String own;
     @Value("${fdfs.ip}")
@@ -52,6 +52,8 @@ public class UserController {
         model.addAttribute("tag",tag);
         List<Article> list = articleservice.queryAll();
         model.addAttribute("list",list);
+        List<Notice> notices = noticeservice.queryAll();
+        model.addAttribute("notices",notices);
         return "home";
     }
     /**
@@ -145,6 +147,8 @@ public class UserController {
         model.addAttribute("own",list1.getUsername());
         AdminUser list = loginservice.findloginuser(own);
         model.addAttribute("list",list);
+        List<Link> links = linkservice.queryAll();
+        model.addAttribute("links",links);
         return "about";
     }
     /**

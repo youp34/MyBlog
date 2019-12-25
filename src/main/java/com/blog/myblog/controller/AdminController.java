@@ -1,12 +1,8 @@
 package com.blog.myblog.controller;
 
 import com.blog.myblog.component.FastDFSClientWrapper;
-import com.blog.myblog.pojo.AdminUser;
-import com.blog.myblog.pojo.Article;
-import com.blog.myblog.pojo.Tag;
-import com.blog.myblog.service.ArticleserviceImpl;
-import com.blog.myblog.service.LoginserviceImpl;
-import com.blog.myblog.service.Tagservice;
+import com.blog.myblog.pojo.*;
+import com.blog.myblog.service.*;
 import com.blog.myblog.tool.GetTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,13 +21,17 @@ import java.util.List;
 @Controller
 public class AdminController {
     @Autowired
-    LoginserviceImpl loginservice;
+    private LoginserviceImpl loginservice;
     @Autowired
-    Tagservice tagservice;
+    private Tagservice tagservice;
     @Autowired
-    FastDFSClientWrapper fastDFSClientWrapper;
+    private FastDFSClientWrapper fastDFSClientWrapper;
     @Autowired
-    ArticleserviceImpl articleservice;
+    private ArticleserviceImpl articleservice;
+    @Autowired
+    private Linkservice linkservice;
+    @Autowired
+    private Noticeservice noticeservice;
     @Value("${fdfs.ip}")
     private String ip;
     /**
@@ -366,6 +366,10 @@ public class AdminController {
         AdminUser login = loginservice.findloginuser(username);
         if ("1".equals(login.getPermission())){
             model.addAttribute("identity",username);
+            List<Notice> notices = noticeservice.queryAll();
+            List<Link> links = linkservice.queryAll();
+            model.addAttribute("notices",notices);
+            model.addAttribute("links",links);
             return "ad-setting";
         } else {
             model.addAttribute("error","没有权限访问此页面！");
@@ -376,11 +380,37 @@ public class AdminController {
      * 公告管理
      */
     @RequestMapping(value = "/set_notice", method = RequestMethod.POST)
-    public String setting_notice(HttpSession session, Model model){
+    public String setting_notice(HttpSession session, Model model,@RequestParam("notice")String notice){
         String username = (String) session.getAttribute("user");
         AdminUser login = loginservice.findloginuser(username);
         if ("1".equals(login.getPermission())){
-            return "redirect:/setting";
+            if ("".equals(notice) || notice == null){
+                model.addAttribute("error","你的操作有误！");
+                return "error";
+            }else {
+                noticeservice.setNotice(notice);
+                return "redirect:/setting";
+            }
+        } else {
+            model.addAttribute("error","没有权限访问此页面！");
+            return "error";
+        }
+    }
+    /**
+     * 删除公告
+     */
+    @RequestMapping(value = "/delete_notice/{id}", method = RequestMethod.GET)
+    public String setting_notice_delete(HttpSession session, Model model, @PathVariable int id){
+        String username = (String) session.getAttribute("user");
+        AdminUser login = loginservice.findloginuser(username);
+        if ("1".equals(login.getPermission())){
+            if (id > 0){
+                noticeservice.deleteNotice(id);
+                return "redirect:/setting";
+            }else {
+                model.addAttribute("error","您的操作有误！");
+                return "error";
+            }
         } else {
             model.addAttribute("error","没有权限访问此页面！");
             return "error";
@@ -390,11 +420,37 @@ public class AdminController {
      * 友情链接管理
      */
     @RequestMapping(value = "/set_link", method = RequestMethod.POST)
-    public String setting_link(HttpSession session, Model model){
+    public String setting_link(HttpSession session, Model model,@RequestParam("name")String name,@RequestParam("url")String url){
         String username = (String) session.getAttribute("user");
         AdminUser login = loginservice.findloginuser(username);
         if ("1".equals(login.getPermission())){
-            return "redirect:/setting";
+            if ("".equals(name) || "".equals(url)){
+                model.addAttribute("error","你的操作有误！");
+                return "error";
+            }else {
+                linkservice.setLink(name,url);
+                return "redirect:/setting";
+            }
+        } else {
+            model.addAttribute("error","没有权限访问此页面！");
+            return "error";
+        }
+    }
+    /**
+     * 删除友情链接
+     */
+    @RequestMapping(value = "/delete_link/{id}", method = RequestMethod.GET)
+    public String setting_link_delete(HttpSession session, Model model,@PathVariable int id){
+        String username = (String) session.getAttribute("user");
+        AdminUser login = loginservice.findloginuser(username);
+        if ("1".equals(login.getPermission())){
+            if (id > 0){
+                linkservice.deleteLink(id);
+                return "redirect:/setting";
+            }else {
+                model.addAttribute("error","您的操作有误！");
+                return "error";
+            }
         } else {
             model.addAttribute("error","没有权限访问此页面！");
             return "error";
@@ -404,11 +460,24 @@ public class AdminController {
      * 修改密码
      */
     @RequestMapping(value = "/change_password", method = RequestMethod.POST)
-    public String setting_password(HttpSession session, Model model){
+    public String setting_password(HttpSession session, Model model,@RequestParam("oldpassword")String oldpassword,@RequestParam("password")String password){
         String username = (String) session.getAttribute("user");
         AdminUser login = loginservice.findloginuser(username);
         if ("1".equals(login.getPermission())){
-            return "redirect:/setting";
+            AdminUser user = loginservice.findloginuser(username);
+            if (oldpassword.equals(user.getPassword())){
+                if ("".equals(oldpassword) || "".equals(password)){
+                    model.addAttribute("error","您的操作有误！");
+                    return "error";
+                } else {
+                    loginservice.setPassword(password,username);
+                    return "redirect:/setting";
+                }
+            } else {
+                model.addAttribute("warning","您的初始密码错误！");
+                model.addAttribute("url","/setting");
+                return "ad-wrong";
+            }
         } else {
             model.addAttribute("error","没有权限访问此页面！");
             return "error";
