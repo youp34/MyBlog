@@ -26,6 +26,35 @@
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script type="text/javascript">
+        function check(){
+            var contentMsg = document.getElementById("contentMsg");
+
+            var content = document.getElementById("content");
+            var isPass = true;
+
+            var length = content.value.length;
+            if(length<1 || length>100){
+//					alert("用户名长度必须是3-6位");
+                contentMsg.innerText= "内容长度必须在1-100位";
+                isPass = false;
+            }else{
+                contentMsg.innerText= "";
+            }
+            return isPass;
+        }
+        //onblur失去焦点的时候调用
+        function checkContent(username){
+            var contentMsg = document.getElementById("contentMsg");
+
+            var length = username.value.length;
+            if(length<1 || length>100){
+                contentMsg.innerText= "内容长度必须在1-100位";
+            }else{
+                contentMsg.innerText= "";
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -62,8 +91,35 @@
             </ul>
         </aside>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
-            <div style="margin-top: 20px">
-                时光轴
+            <h3>时光轴</h3>
+            <div style="padding: 10px; height: 600px;width: 100%;background-color: white; margin-bottom: 20px; overflow:auto;">
+                <h4>网站公告</h4>
+                <div>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th><span class="glyphicon glyphicon-list"></span>时间</th>
+                                <th class="hidden-sm"><span class="glyphicon glyphicon-comment"></span>公告</th>
+                                <th><span class="glyphicon glyphicon-list"></span>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="timeline:${timelines}">
+                                <td th:text="${timeline.getTime()}"></td>
+                                <td th:text="${timeline.getContent()}"></td>
+                                <td><a th:href="@{'/line_delete/'+${timeline.getId()}}">删除</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <h3>添加</h3>
+                    <form action="/line_add" method="post" onsubmit="return check()">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="content" name="content" onblur="checkContent(this)" placeholder="添加内容">
+                        </div>
+                        <p><font color="red" id="contentMsg"></font></p>
+                        <input type="submit" class="btn btn-default" value="提 交">
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -31,6 +31,8 @@ public class AdminController {
     @Autowired
     private Linkservice linkservice;
     @Autowired
+    private Timelineservice timelineservice;
+    @Autowired
     private Noticeservice noticeservice;
     @Value("${fdfs.ip}")
     private String ip;
@@ -350,8 +352,51 @@ public class AdminController {
         String username = (String) session.getAttribute("user");
         AdminUser login = loginservice.findloginuser(username);
         if ("1".equals(login.getPermission())){
+            List<Timeline> timelines = timelineservice.queryAll();
+            model.addAttribute("timelines",timelines);
             model.addAttribute("identity",username);
             return "ad-timeline";
+        } else {
+            model.addAttribute("error","没有权限访问此页面！");
+            return "error";
+        }
+    }
+    /**
+     *  添加时光轴
+     */
+    @RequestMapping(value = "/line_add", method = RequestMethod.POST)
+    public String line_add(HttpSession session, Model model,@RequestParam("content")String content){
+        String username = (String) session.getAttribute("user");
+        AdminUser login = loginservice.findloginuser(username);
+        if ("1".equals(login.getPermission())){
+            if (!"".equals(content)){
+                GetTime time = new GetTime();
+                timelineservice.setTimeline(time.getTime(),content);
+                return "redirect:/line";
+            } else {
+                model.addAttribute("error","您的操作有误！");
+                return "error";
+            }
+        } else {
+            model.addAttribute("error","没有权限访问此页面！");
+            return "error";
+        }
+    }
+    /**
+     * 删除时光轴
+     */
+    @RequestMapping(value = "/line_delete/{id}", method = RequestMethod.GET)
+    public String line_delete(HttpSession session, Model model, @PathVariable int id){
+        String username = (String) session.getAttribute("user");
+        AdminUser login = loginservice.findloginuser(username);
+        if ("1".equals(login.getPermission())){
+            if (id > 0){
+                timelineservice.deleteTimeline(id);
+                return "redirect:/line";
+            } else {
+                model.addAttribute("error","您的操作有误！");
+                return "error";
+            }
         } else {
             model.addAttribute("error","没有权限访问此页面！");
             return "error";

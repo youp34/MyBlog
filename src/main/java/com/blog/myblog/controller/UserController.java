@@ -30,6 +30,8 @@ public class UserController {
     @Autowired
     private Linkservice linkservice;
     @Autowired
+    private Timelineservice timelineservice;
+    @Autowired
     private Noticeservice noticeservice;
     @Value("${blog.user}")
     private String own;
@@ -177,6 +179,8 @@ public class UserController {
         }
         AdminUser list1 = loginservice.findloginuser(own);
         model.addAttribute("own",list1.getUsername());
+        List<Timeline> timelines = timelineservice.queryAll();
+        model.addAttribute("timelines",timelines);
         return "timeline";
     }
 }
