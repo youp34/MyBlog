@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -96,6 +97,29 @@ public class UserController {
         List<Tag> tag = tagservice.queryAll();
         model.addAttribute("tag",tag);
         List<Article> list = articleservice.queryAll();
+        model.addAttribute("list",list);
+        return "article";
+    }
+    /**
+     * 博客文章模糊搜索
+     */
+    @RequestMapping(value = "/fuzzySearch", method = RequestMethod.POST)
+    public String articleSeaech(HttpSession session, Model model,@RequestParam("keywords")String keywords){
+        String username = (String) session.getAttribute("user");
+        if ("".equals(username)){
+            model.addAttribute("error","您的用户Session已过期请重新登录");
+            return "error";
+        }
+        AdminUser list1 = loginservice.findloginuser(own);
+        model.addAttribute("own",list1.getUsername());
+        List<Tag> tag = tagservice.queryAll();
+        model.addAttribute("tag",tag);
+        // 模糊搜索
+        if ("".equals(keywords)){
+            model.addAttribute("error","您的操作有误");
+            return "error";
+        }
+        List<Article> list = articleservice.fuzzySearch(keywords);
         model.addAttribute("list",list);
         return "article";
     }

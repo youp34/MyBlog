@@ -80,13 +80,13 @@
                 </div>
                 <div class="blog-main-right">
                     <div class="blog-search">
-                        <form class="layui-form" action="">
+                        <form class="layui-form" action="/fuzzySearch" method="post">
                             <div class="layui-form-item">
                                 <div class="search-keywords  shadow">
                                     <input type="text" name="keywords" lay-verify="required" placeholder="输入关键词搜索" autocomplete="off" class="layui-input">
                                 </div>
                                 <div class="search-submit  shadow">
-                                    <a class="search-btn" lay-submit="formSearch" lay-filter="formSearch"><i class="fa fa-search"></i></a>
+                                    <button type="submit" class="search-btn" lay-submit="formSearch" lay-filter="formSearch"><i class="fa fa-search"></i></button>
                                 </div>
                             </div>
                         </form>

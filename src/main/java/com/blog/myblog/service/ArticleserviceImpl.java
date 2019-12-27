@@ -49,4 +49,9 @@ public class ArticleserviceImpl implements Articleservice {
     public Integer countArticle() {
         return articleMapper.countArticle();
     }
+
+    @Override
+    public List<Article> fuzzySearch(String title) {
+        return articleMapper.fuzzySearch(title);
+    }
 }

@@ -21,4 +21,6 @@ public interface ArticleMapper {
     void updataPraise(@Param("page_view")int page_view,@Param("id")int id);
     @Select("select count(*) from blog_article")
     Integer countArticle();
+    @Select("select * from blog_article where title like #{title}")
+    List<Article> fuzzySearch(@Param("title")String title);
 }

@@ -14,4 +14,5 @@ public interface Articleservice {
     List<Article> sortByTag(String tag);
     void updataPraise(int page_view,int id);
     Integer countArticle();
+    List<Article> fuzzySearch(String title);
 }
