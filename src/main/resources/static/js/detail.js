@@ -29,18 +29,37 @@ layui.use(['form', 'layedit'], function () {
     //监听评论提交
     form.on('submit(formRemark)', function (data) {
         var index = layer.load(1);
+        var url;
+        url = window.location.href; /* 获取完整URL */
+        var arr = url.split("/");
+        var num = arr[arr.length-1];
         //模拟评论提交
         setTimeout(function () {
             layer.close(index);
             var content = data.field.editorContent;
-            var html = '<li><div class="comment-parent"><img src="../images/pengyu.jpg"alt="absolutely"/><div class="info"><span class="username">Absolutely</span><span class="time">2017-03-18 18:46:06</span></div><div class="content">' + content + '</div></div></li>';
-            $('.blog-comment').append(html);
+            /*var html = '<li><div class="comment-parent"><img src="../images/pengyu.jpg"alt="absolutely"/><div class="info"><span class="username">Absolutely</span><span class="time">2017-03-18 18:46:06</span></div><div class="content">' + content + '</div></div></li>';
+            $('.blog-comment').append(html);*/
             $('#remarkEditor').val('');
             editIndex = layui.layedit.build('remarkEditor', {
                 height: 150,
                 tool: ['face', '|', 'left', 'center', 'right', '|', 'link'],
             });
-            layer.msg("评论成功", { icon: 1 });
+            $.ajax({
+                url:'/comment/'+ num,
+                type:'POST',  // 默认为GET
+                data:{
+                    content: content,
+                },
+                timeout:5000, // 超时时间
+                beforeSend:function(xhr){
+                },
+                success:function(result){
+                    layer.msg("评论成功", { icon: 1 });
+                    location.reload()
+                },
+                error:function(xhr,textStatus){
+                }
+            });
         }, 500);
         return false;
     });

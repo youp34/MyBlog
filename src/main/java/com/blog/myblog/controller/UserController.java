@@ -4,6 +4,7 @@ package com.blog.myblog.controller;
 import com.blog.myblog.component.FastDFSClientWrapper;
 import com.blog.myblog.pojo.*;
 import com.blog.myblog.service.*;
+import com.blog.myblog.tool.GetTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,8 @@ public class UserController {
     private Timelineservice timelineservice;
     @Autowired
     private Noticeservice noticeservice;
+    @Autowired
+    private Commentservice commentservice;
     @Value("${blog.user}")
     private String own;
     @Value("${fdfs.ip}")
@@ -133,15 +136,21 @@ public class UserController {
             model.addAttribute("error","您的用户Session已过期请重新登录");
             return "error";
         }
+        // 用户信息
         AdminUser list1 = loginservice.findloginuser(own);
         model.addAttribute("own",list1.getUsername());
+        // 遍历标签
         List<Tag> tag = tagservice.queryAll();
         model.addAttribute("tag",tag);
+        // 显示文章内容
         Article list = articleservice.searchAticle(id);
         model.addAttribute("list",list);
         String url = ip + "/" + list.getContent_html();
         String content_html = new String(fastDFSClientWrapper.downFile(url), "utf-8");
         model.addAttribute("content_html",content_html);
+        // 显示评论内容
+        List<Comment> comments = commentservice.findComment(id);
+        model.addAttribute("comments",comments);
         return "detail";
     }
     /**
@@ -158,6 +167,26 @@ public class UserController {
         int number = list.getPage_view() + 1;
         articleservice.updataPraise(number,id);
         return "redirect:/detail/" + id;
+    }
+    /**
+     * 博客文章评论
+     */
+    @RequestMapping(value = "/comment/{id}", method = RequestMethod.POST)
+    public String comments(@PathVariable int id,HttpSession session, Model model,@RequestParam("content")String editorContent){
+        String username = (String) session.getAttribute("user");
+        if ("".equals(username)){
+            model.addAttribute("error","您的用户Session已过期请重新登录");
+            return "error";
+        }
+        if (!"".equals(editorContent)){
+            GetTime time =new GetTime();
+            commentservice.setComment(id,username,editorContent,time.getTime());
+            return "redirect:/detail/" + id;
+        }else {
+            model.addAttribute("error","您的操作有误");
+            return "error";
+        }
+
     }
     /**
      * 关于本站
