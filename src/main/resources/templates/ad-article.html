@@ -78,11 +78,11 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="list1: ${list}">
+							<tr th:each="list1:${list}">
 								<td th:text="${list1.getTitle()}"></td>
 								<td th:text="${list1.getTag()}"></td>
 								<td th:text="${list1.getPage_view()}"></td>
-								<td><a href="/comment">查看评论</a></td>
+								<td><a th:href="@{'/comment/'+${list1.getId()}}">查看评论</a></td>
 								<td th:text="${list1.getTime()}"></td>
 								<td><a th:href="@{'/delete_article/'+${list1.getId()}}">删除</a></td>
 							</tr>

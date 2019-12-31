@@ -34,6 +34,8 @@ public class AdminController {
     private Timelineservice timelineservice;
     @Autowired
     private Noticeservice noticeservice;
+    @Autowired
+    private Commentservice commentservice;
     @Value("${fdfs.ip}")
     private String ip;
     /**
@@ -155,12 +157,39 @@ public class AdminController {
     /**
      * 评论管理
      */
-    @RequestMapping(value = "/comment", method = RequestMethod.GET)
-    public String comment_get(HttpSession session,Model model){
+    @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)
+    public String comment_get(HttpSession session,Model model,@PathVariable int id){
         String username = (String) session.getAttribute("user");
         AdminUser login = loginservice.findloginuser(username);
         if ("1".equals(login.getPermission())){
+            // 根据文章id查询评论
+            List<Comment> comments = commentservice.findComment(id);
+            model.addAttribute("identity",username);
+            model.addAttribute("comments",comments);
             return "ad-comment";
+        } else {
+            model.addAttribute("error","没有权限访问此页面！");
+            return "error";
+        }
+    }
+    /**
+     * 删除评论
+     */
+    @RequestMapping(value = "/delete_comment/{id}", method = RequestMethod.GET)
+    public String commentDelete(HttpSession session,Model model,@PathVariable String id){
+        String username = (String) session.getAttribute("user");
+        AdminUser login = loginservice.findloginuser(username);
+        if ("1".equals(login.getPermission())){
+            if (!"".equals(id)){
+                String[] strarray=id.split("-",2);
+                int comment_id = Integer.parseInt(strarray[0]);
+                int article_id = Integer.parseInt(strarray[1]);
+                commentservice.deleteComment(comment_id);
+                return "redirect:/comment/" + article_id;
+            }else {
+                model.addAttribute("error","您的操作有误");
+                return "error";
+            }
         } else {
             model.addAttribute("error","没有权限访问此页面！");
             return "error";

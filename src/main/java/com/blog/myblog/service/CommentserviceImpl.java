@@ -31,4 +31,9 @@ public class CommentserviceImpl implements Commentservice {
     public void setComment(int article_id, String comment_user, String comment_content,String comment_time) {
         commentMapper.setComment(article_id,comment_user,comment_content,comment_time);
     }
+
+    @Override
+    public Comment findComment_id(int id) {
+        return commentMapper.findComment_id(id);
+    }
 }

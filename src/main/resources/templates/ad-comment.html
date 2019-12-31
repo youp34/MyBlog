@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='zh'>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
 	<head>
 		<!-- meta -->
 		<meta charset="utf-8">
@@ -18,8 +18,8 @@
 		<title>超级码力- 博客后台管理系统</title>
 		
 		<!-- css -->
-		<link href="css/bootstrap.min.css" rel="stylesheet">
-		<link href="css/styles.css" rel="stylesheet">
+		<link href="../css/bootstrap.min.css" rel="stylesheet">
+		<link href="../css/styles.css" rel="stylesheet">
 
 		<!-- js -->
 		<!--[if lt IE 9]>
@@ -38,7 +38,7 @@
 					</div>
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 						<ul class="nav navbar-nav navbar-right">
-							<li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">admin <span class="caret"></span></a>
+							<li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span th:text="${identity}"></span> <span class="caret"></span></a>
 								<ul class="dropdown-menu dropdown-menu-left">
 									<li><a href="/logout" onClick="if(!confirm('是否确认退出？'))return false;">退出登录</a></li>
 								</ul>
@@ -62,75 +62,33 @@
 				</ul>
 			</aside>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
-				<h3>XXX文章评论管理</h3>
-				<div class="commentslist">
-					<div class="comments1">
-						<div class="avatar">
-							<img src="http://cdn2.jianshu.io/assets/default_avatar/5-33d2da32c552b8be9a0548c7a4576607.jpg" alt="头像" class="img-rounded img-responsive">
-						</div>
-						<div class="uinfo">
-							<span><strong>我是作者</strong><span>
-						</div>
-						<div class="commentcont">
-							<span>通常情况下，Django 的视图函数（View）是一个纯粹的 Python 函数，它接收一个 request（HTTP 请求）,通常情况下，Django 的视图函数（View）是一个纯粹的 Python 函数，它接收一个 request（HTTP 请求）通常情况下，Django 的视图函数（View）是一个纯粹的 Python 函数，它接收一个 request（HTTP 请求）通常情况下，Django 的</span>
-						</div>
-						<div class="commentfoot">
-							<span class="pub-time text-muted">40分钟前</span> &bull; <span class="pub-time text-muted"><button type="submit" class="btn btn-default"> 屏蔽 </button></span>
-						</div>
-						<hr/>
-						<div class="comments2">
-							<div class="avatar1">
-								<img src="http://cdn2.jianshu.io/assets/default_avatar/5-33d2da32c552b8be9a0548c7a4576607.jpg" alt="头像" class="img-rounded img-responsive">
-							</div>
-							<div class="uinfo1">
-								<span><strong>我是回复人</strong><span> <span class="glyphicon glyphicon-share-alt"></span> <span><strong>我是被回复人</strong><span>
-							</div>
-							<div class="commentcont1">
-								<span>通常情况下，Django 的视图函数（View）是一个纯粹的 Python 函数，它接收一个 request（HTTP 请求）,通常情况下，Django 的视图函数（View）是一个纯粹的 Python 函数，它接收一个 request（HTTP 请求）通常情况下，Django 的视图函数（View）是一个纯粹的 Python 函数，它接收一个 request（HTTP 请求）通常情况下，Django 的</span>
-							</div>
-							<div class="commentfoot1">
-								<span class="pub-time text-muted">40分钟前</span> &bull; <span class="pub-time text-muted"><button type="submit" class="btn btn-default"> 屏蔽 </button></span>
-							</div>
-							<hr/>
-						</div>
-						<div class="comments2">
-							<div class="avatar1">
-								<img src="http://cdn2.jianshu.io/assets/default_avatar/5-33d2da32c552b8be9a0548c7a4576607.jpg" alt="头像" class="img-rounded img-responsive">
-							</div>
-							<div class="uinfo1">
-								<span><strong>我是回复人</strong><span> <span class="glyphicon glyphicon-share-alt"></span> <span><strong>我是被回复人</strong><span>
-							</div>
-							<div class="commentcont1">
-								<span>通常情况下，Django 的视图函数（View）是一个纯粹的 Python 函数，它接收一个 request（HTTP 请求）,通常情况下，Django 的视图函数（View）是一个纯粹的 Python 函数，它接收一个 request（HTTP 请求）通常情况下，Django 的视图函数（View）是一个纯粹的 Python 函数，它接收一个 request（HTTP 请求）通常情况下，Django 的</span>
-							</div>
-							<div class="commentfoot1">
-								<span class="pub-time text-muted">40分钟前</span> &bull; <span class="pub-time text-muted"><button type="submit" class="btn btn-default"> 屏蔽 </button></span>
-							</div>
-							<hr/>
-						</div>
-						<div class="comments2">
-							<div class="avatar1">
-								<img src="http://cdn2.jianshu.io/assets/default_avatar/5-33d2da32c552b8be9a0548c7a4576607.jpg" alt="头像" class="img-rounded img-responsive">
-							</div>
-							<div class="uinfo1">
-								<span><strong>我是回复人</strong><span> <span class="glyphicon glyphicon-share-alt"></span> <span><strong>我是被回复人</strong><span>
-							</div>
-							<div class="commentcont1">
-								<span>通常情况下，Django 的视图函数（View）是一个纯粹的 Python 函数，它接收一个 request（HTTP 请求）,通常情况下，Django 的视图函数（View）是一个纯粹的 Python 函数，它接收一个 request（HTTP 请求）通常情况下，Django 的视图函数（View）是一个纯粹的 Python 函数，它接收一个 request（HTTP 请求）通常情况下，Django 的</span>
-							</div>
-							<div class="commentfoot1">
-								<span class="pub-time text-muted">40分钟前</span> &bull; <span class="pub-time text-muted"><button type="submit" class="btn btn-default"> 取消屏蔽 </button></span>
-							</div>
-							<hr/>
-						</div>
-					</div>
+				<h3><span>Java 学习资源</span>文章评论管理</h3>
+				<div>
+					<table class="table table-striped table-hover">
+						<thead>
+						<tr>
+							<th><span class="glyphicon glyphicon-file"></span>评论者</th>
+							<th class="hidden-sm"><span class="glyphicon glyphicon-tag"></span>评论时间</th>
+							<th class="hidden-sm"><span class="glyphicon glyphicon-comment"></span>评论内容</th>
+							<th><span class="glyphicon glyphicon-pencil"></span>操作</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr th:each="comment:${comments}">
+							<td th:text="${comment.getComment_user()}"></td>
+							<td th:text="${comment.getComment_time()}"></td>
+							<td th:utext="${comment.getComment_content()}"></td>
+							<td><a th:href="@{'/delete_comment/'+${comment.getId()}+'-'+${comment.getArticle_id()}}">删除</a></td>
+						</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
 		
 	</section>
 		<!-- jQuery  -->
-		<script src="js/jquery-3.2.1.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
+		<script src="../js/jquery-3.2.1.min.js"></script>
+		<script src="../js/bootstrap.min.js"></script>
 	</body>
 </html>

@@ -11,4 +11,5 @@ public interface Commentservice {
     List<Comment> findComment(int article_id);
     void deleteComment(int id);
     void setComment(int article_id,String comment_user,String comment_content,String comment_time);
+    Comment findComment_id(int id);
 }
